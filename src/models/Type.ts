@@ -33,13 +33,6 @@ import {
     StructTypeFromJSONTyped,
     StructTypeToJSON,
 } from './StructType';
-import {
-    string,
-    instanceOfstring,
-    stringFromJSON,
-    stringFromJSONTyped,
-    stringToJSON,
-} from './string';
 
 /**
  * @type Type
@@ -56,7 +49,7 @@ export function TypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): Type
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...ListTypeFromJSONTyped(json, true), ...MapTypeFromJSONTyped(json, true), ...StructTypeFromJSONTyped(json, true), ...stringFromJSONTyped(json, true) };
+    return { ...ListTypeFromJSONTyped(json, true), ...MapTypeFromJSONTyped(json, true), ...StructTypeFromJSONTyped(json, true), ...(JSON.stringify(json) as unknown as object) };
 }
 
 export function TypeToJSON(value?: Type | null): any {
@@ -67,17 +60,17 @@ export function TypeToJSON(value?: Type | null): any {
         return null;
     }
 
-    if (instanceOfListType(value)) {
+    if (instanceOfListType(value as object)) {
         return ListTypeToJSON(value as ListType);
     }
-    if (instanceOfMapType(value)) {
+    if (instanceOfMapType(value as object)) {
         return MapTypeToJSON(value as MapType);
     }
-    if (instanceOfStructType(value)) {
+    if (instanceOfStructType(value as object)) {
         return StructTypeToJSON(value as StructType);
     }
-    if (instanceOfstring(value)) {
-        return stringToJSON(value as string);
+    if (value instanceof String) {
+        return JSON.parse(value as string);
     }
 
     return {};

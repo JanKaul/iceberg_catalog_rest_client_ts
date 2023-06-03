@@ -19,13 +19,7 @@ import {
     TransformTermFromJSONTyped,
     TransformTermToJSON,
 } from './TransformTerm';
-import {
-    string,
-    instanceOfstring,
-    stringFromJSON,
-    stringFromJSONTyped,
-    stringToJSON,
-} from './string';
+
 
 /**
  * @type Term
@@ -42,7 +36,7 @@ export function TermFromJSONTyped(json: any, ignoreDiscriminator: boolean): Term
     if ((json === undefined) || (json === null)) {
         return json;
     }
-    return { ...TransformTermFromJSONTyped(json, true), ...stringFromJSONTyped(json, true) };
+    return { ...TransformTermFromJSONTyped(json, true), ...(JSON.stringify(json) as unknown as object) };
 }
 
 export function TermToJSON(value?: Term | null): any {
@@ -53,11 +47,11 @@ export function TermToJSON(value?: Term | null): any {
         return null;
     }
 
-    if (instanceOfTransformTerm(value)) {
+    if (instanceOfTransformTerm(value as object)) {
         return TransformTermToJSON(value as TransformTerm);
     }
-    if (instanceOfstring(value)) {
-        return stringToJSON(value as string);
+    if (value instanceof String) {
+        return JSON.parse(value as string);
     }
 
     return {};
