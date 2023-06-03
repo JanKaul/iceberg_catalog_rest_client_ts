@@ -1,0 +1,21 @@
+{
+  "name": "iceberg_catalog_rest_client",
+  "version": "0.0.7",
+  "description": "OpenAPI client for iceberg_catalog_rest_client",
+  "author": "OpenAPI-Generator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JanKaul/iceberg_catalog_rest_client_ts.git"
+  },
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.esm.json",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^4.0"
+  }
+}
